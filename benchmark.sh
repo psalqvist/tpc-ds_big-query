@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -26,8 +26,8 @@ find warmup/ -name warmup_*.sql | sort -V | {
 echo -e "${GREEN}Running Warmup Scripts - Complete"
 
 # Test
-mkdir -p results
-echo "Query,Started,Ended,Billing Tier,Bytes" > results/BigQueryResults.csv
+mkdir -p results/${PROJECT} 
+echo "Query,Started,Ended,Billing Tier,Bytes" > results/${PROJECT}/BigQueryResults.csv
 
 echo -e "${GREEN}Running Benchmark Scripts - Starting"
 
@@ -49,7 +49,7 @@ find query/ -name query*.sql | sort -V | {
 
     JOB=$(bq --format=json show -j ${ID})
 
-    echo $JOB >> results/${ID}-stat.json
+    echo $JOB >> results/${PROJECT}/${ID}-stat.json
 
     STARTED=$(echo $JOB | jq .statistics.startTime)
     ENDED=$(echo $JOB | jq .statistics.endTime)
@@ -58,7 +58,7 @@ find query/ -name query*.sql | sort -V | {
     BYTES=$(echo $JOB | jq .statistics.query.totalBytesBilled)
 
 
-    echo "$f,$STARTED,$ENDED,$BILLING_TIER,$BYTES" >> results/BigQueryResults.csv
+    echo "$f,$STARTED,$ENDED,$BILLING_TIER,$BYTES" >> results/${PROJECT}/BigQueryResults.csv
   done
 }
 

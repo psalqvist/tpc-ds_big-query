@@ -1,8 +1,8 @@
 # Run this on the VM to bootstrap
 
 # Copy data generation script and mark as executable
-gsutil cp -r gs://tcp-ds-data-gen .
-cd tcp-ds-data-gen/
+gsutil cp -r gs://tpc-ds-data-gen .
+cd tpc-ds-data-gen/
 chmod +x dsdgen
 
 # Install google fuse

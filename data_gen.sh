@@ -5,7 +5,7 @@
 
 PROJECT=scale_$2
 
-GCS_BUCKET=data_$PROJECT
+GCS_BUCKET=tpc_ds_$PROJECT
 DATA_DIR=~/$GCS_BUCKET
 
 # Delete existing data dir
@@ -29,14 +29,15 @@ gen() {
   SEED=2019
   seq 1 $CPU \
     | xargs -t -P$CPU -I__ \
-        ./dsdgen \
+        ./tpc-ds-data-gen/dsdgen \
           -SCALE $SCALE \
           -DELIMITER \| \
           -PARALLEL $CPU \
           -CHILD __ \
           -TERMINATE N \
           -RNGSEED $SEED \
-          -DIR $DATA_DIR
+          -DIR $DATA_DIR \
+          -DISTRIBUTIONS ./tpc-ds-data-gen/tpcds.idx
 }
 
 gen $1 $2
